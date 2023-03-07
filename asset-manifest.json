@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/task-organizer/static/css/main.7acaea2f.css",
+    "main.js": "/task-organizer/static/js/main.2a9afef4.js",
+    "index.html": "/task-organizer/index.html",
+    "main.7acaea2f.css.map": "/task-organizer/static/css/main.7acaea2f.css.map",
+    "main.2a9afef4.js.map": "/task-organizer/static/js/main.2a9afef4.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7acaea2f.css",
+    "static/js/main.2a9afef4.js"
+  ]
+}
