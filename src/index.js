@@ -13,7 +13,7 @@ import '@fontsource/roboto/700.css';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename="task-organizer">
         <App />
       </BrowserRouter>
     </Provider>
