@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectList } from 'redux/selectors';
 import { fetchCards } from 'redux/operations';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import { CardItem } from 'components/CardItem/CardItem';
 import { AddCardButton } from 'components/AddCardButton/AddCardButton';
