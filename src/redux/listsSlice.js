@@ -38,7 +38,7 @@ const listsSlice = createSlice({
           droppableIdEnd,
           droppableIndexStart,
           droppableIndexEnd,
-          draggableId,
+          // draggableId,
           type,
         } = action.payload;
         // перетягування карток

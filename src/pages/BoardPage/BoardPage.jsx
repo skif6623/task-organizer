@@ -11,7 +11,6 @@ import { dragHappened } from 'redux/actions';
 
 export const BoardPage = () => {
   const lists = useSelector(selectList);
-  const id = 'all';
 
   const dispatch = useDispatch();
 
@@ -30,7 +29,7 @@ export const BoardPage = () => {
         result.destination.droppableId,
         result.source.index,
         result.destination.index,
-        result.draggableId,
+        // result.draggableId,
         result.type
       )
     );
@@ -39,7 +38,7 @@ export const BoardPage = () => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <h1>My Board</h1>
-      <Droppable droppableId={`${id}`} direction="horizontal" type="list">
+      <Droppable droppableId="all-cards" direction="horizontal" type="list">
         {provided => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
             <ECardList>
