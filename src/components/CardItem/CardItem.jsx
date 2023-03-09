@@ -3,8 +3,9 @@ import { ECardItem } from './CardItem.styled';
 import { Task } from '../Task/Task';
 import { AddTaskButton } from 'components/AddTaskButton/AddTaskButton';
 import { AddForm } from 'components/AddForm/AddForm';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 
-export const CardItem = ({ title, cards }) => {
+export const CardItem = ({ title, cards, id, index }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openFormHandler = () => {
@@ -16,13 +17,32 @@ export const CardItem = ({ title, cards }) => {
   };
 
   return (
-    <ECardItem>
-      <h2>{title}</h2>
-      {cards.map(({ id, text }) => (
-        <Task key={id} text={text} />
-      ))}
-      {!isOpen && <AddTaskButton open={openFormHandler} />}
-      {isOpen && <AddForm type="new task" close={closeFormHandler} />}
-    </ECardItem>
+    <Draggable draggableId={`${id}`} index={index}>
+      {provided => (
+        <div
+          {...provided.draggableProps}
+          ref={provided.innerRef}
+          {...provided.dragHandleProps}
+        >
+          <Droppable droppableId={`${id}`}>
+            {provided => (
+              <div {...provided.droppableProps} ref={provided.innerRef}>
+                <ECardItem>
+                  <h2>{title}</h2>
+                  {cards.map(({ id, text }, index) => (
+                    <Task key={id} id={id} text={text} index={index} />
+                  ))}
+                  {!isOpen && <AddTaskButton open={openFormHandler} />}
+                  {isOpen && (
+                    <AddForm id={id} type="new task" close={closeFormHandler} />
+                  )}
+                  {provided.placeholder}
+                </ECardItem>
+              </div>
+            )}
+          </Droppable>
+        </div>
+      )}
+    </Draggable>
   );
 };

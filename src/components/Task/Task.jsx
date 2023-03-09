@@ -1,16 +1,24 @@
 import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+import { CardContent, Typography, Card } from '@mui/material';
+import { Draggable } from 'react-beautiful-dnd';
+import { ECardContainer } from './Task.styled';
 
-export function Task({ text }) {
+export function Task({ text, id, index }) {
   return (
-    <Card sx={{ minWidth: 275, display: 'flex' }}>
-      <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {text}
-        </Typography>
-      </CardContent>
-    </Card>
+    <Draggable draggableId={`${id}`} index={index}>
+      {provided => (
+        <ECardContainer
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <Card>
+            <CardContent>
+              <Typography>{text}</Typography>
+            </CardContent>
+          </Card>
+        </ECardContainer>
+      )}
+    </Draggable>
   );
 }
