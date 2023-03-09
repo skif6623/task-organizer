@@ -40,21 +40,19 @@ export const BoardPage = () => {
       <h1>My Board</h1>
       <Droppable droppableId="all-cards" direction="horizontal" type="list">
         {provided => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
-            <ECardList>
-              {lists.map(({ title, id, items }, index) => (
-                <CardItem
-                  key={id}
-                  title={title}
-                  cards={items}
-                  id={id}
-                  index={index}
-                />
-              ))}
-              {provided.placeholder}
-              <AddCardButton />
-            </ECardList>
-          </div>
+          <ECardList {...provided.droppableProps} ref={provided.innerRef}>
+            {lists.map(({ title, id, items }, index) => (
+              <CardItem
+                key={id}
+                title={title}
+                cards={items}
+                id={id}
+                index={index}
+              />
+            ))}
+            {provided.placeholder}
+            <AddCardButton />
+          </ECardList>
         )}
       </Droppable>
     </DragDropContext>
