@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectList } from 'redux/selectors';
 import { fetchCards } from 'redux/operations';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { CardItem } from 'components/CardItem/CardItem';
 import { AddCardButton } from 'components/AddCardButton/AddCardButton';
@@ -38,7 +38,7 @@ export const BoardPage = () => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <h1>My Board</h1>
-      <Droppable droppableId="all-cards" direction="horizontal" type="list">
+      <Droppable droppableId="all-lists" direction="horizontal" type="list">
         {provided => (
           <ECardList {...provided.droppableProps} ref={provided.innerRef}>
             {lists.map(({ title, id, items }, index) => (
@@ -50,8 +50,8 @@ export const BoardPage = () => {
                 index={index}
               />
             ))}
-            {provided.placeholder}
             <AddCardButton />
+            {provided.placeholder}
           </ECardList>
         )}
       </Droppable>

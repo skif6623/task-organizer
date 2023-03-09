@@ -41,6 +41,10 @@ const listsSlice = createSlice({
           // draggableId,
           type,
         } = action.payload;
+
+        if (type === 'list') {
+          console.log('ку');
+        }
         // перетягування карток
         if (type === 'list') {
           const cards = [...state.cards];
