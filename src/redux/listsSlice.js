@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchCards, addNewCard, deleteCard, addNewTask } from './operations';
+import {
+  fetchCards,
+  addNewCard,
+  deleteCard,
+  addNewTask,
+  deleteTask,
+} from './operations';
 import { dragHappened } from './actions';
 
 const initialState = {
@@ -18,17 +24,23 @@ const listsSlice = createSlice({
       .addCase(addNewCard.fulfilled, (state, action) => {
         state.cards.push(action.payload);
       })
+      .addCase(deleteCard.fulfilled, (state, action) => {
+        const index = state.cards.findIndex(
+          item => item._id === action.payload._id
+        );
+        state.cards.splice(index, 1);
+      })
       .addCase(addNewTask.fulfilled, (state, action) => {
         const oldCard = state.cards.findIndex(
           item => item._id === action.payload._id
         );
         state.cards.splice(oldCard, 1, action.payload);
       })
-      .addCase(deleteCard.fulfilled, (state, action) => {
-        const index = state.cards.findIndex(
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        const oldCard = state.cards.findIndex(
           item => item._id === action.payload._id
         );
-        state.cards.splice(index, 1);
+        state.cards.splice(oldCard, 1, action.payload);
       })
       .addCase(dragHappened, (state, action) => {
         const {
@@ -70,5 +82,4 @@ const listsSlice = createSlice({
   },
 });
 
-export const { addTask } = listsSlice.actions;
 export const listsReducer = listsSlice.reducer;

@@ -45,8 +45,21 @@ export const deleteCard = createAsyncThunk(
   'cards/deleteCard',
   async (id, thunkAPI) => {
     try {
-      console.log(id);
       const response = await axios.delete(`/api/cards/${id}`);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteTask = createAsyncThunk(
+  'cards/deleteTask',
+  async ({ cardId, items }, thunkAPI) => {
+    try {
+      const response = await axios.patch(`/api/cards/${cardId}/items`, {
+        items: items,
+      });
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

@@ -15,7 +15,7 @@ import {
   ECardTitle,
 } from './CardItem.styled';
 
-export const CardItem = ({ title, cards, id }) => {
+export const CardItem = ({ title, cards, _id }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const dispatch = useDispatch();
@@ -29,22 +29,24 @@ export const CardItem = ({ title, cards, id }) => {
   };
 
   return (
-    <Droppable droppableId={`${id}`}>
+    <Droppable droppableId={`${_id}`}>
       {provided => (
         <ECardContainer>
           <ECardItem {...provided.droppableProps} ref={provided.innerRef}>
             <EDeleteButton
               onClick={() => {
-                dispatch(deleteCard(id));
+                dispatch(deleteCard(_id));
               }}
             />
             <ECardTitle>{title}</ECardTitle>
-            {cards.map(({ id, text }, index) => (
-              <Task key={id} id={id} text={text} index={index} />
-            ))}
+            <div style={{ marginBottom: '20px' }}>
+              {cards.map(({ id, text }, index) => (
+                <Task key={id} id={id} text={text} index={index} cardId={_id} />
+              ))}
+            </div>
             {!isOpen && <AddTaskButton open={openFormHandler} />}
             {isOpen && (
-              <AddForm id={id} type="new task" close={closeFormHandler} />
+              <AddForm id={_id} type="new task" close={closeFormHandler} />
             )}
             {provided.placeholder}
           </ECardItem>

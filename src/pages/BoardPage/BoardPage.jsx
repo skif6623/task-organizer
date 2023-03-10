@@ -38,7 +38,7 @@ export const BoardPage = () => {
       <h1>My Board</h1>
       <ECardList>
         {lists.map(({ title, _id, items }) => (
-          <CardItem key={_id} title={title} cards={items} id={_id} />
+          <CardItem key={_id} title={title} cards={items} _id={_id} />
         ))}
         <AddCardButton />
       </ECardList>

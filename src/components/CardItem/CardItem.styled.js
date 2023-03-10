@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import CloseIcon from '@mui/icons-material/Close';
 
 export const ECardContainer = styled.div`
-  height: 100%;
+  height: 110%;
 `;
 
 export const EDeleteButton = styled(CloseIcon)`
