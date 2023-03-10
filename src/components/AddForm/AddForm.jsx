@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addNewCard } from 'redux/operations';
-import { addTask } from 'redux/listsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectList } from 'redux/selectors';
+import { addNewCard, addNewTask } from 'redux/operations';
+
 import { Card, Box, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+
 import { ETextArea, EAddBtn } from './AddForm.styled';
 import { nanoid } from 'nanoid';
 
 export const AddForm = ({ type, close, id }) => {
   const [value, setValue] = useState('');
   const [task, setTask] = useState('');
-
   const dispatch = useDispatch();
+  const cards = useSelector(selectList);
+  const currentCard = cards.find(item => item._id === id);
 
   const resetForm = type => {
     type === 'card' ? setValue('') : setTask('');
@@ -27,8 +30,14 @@ export const AddForm = ({ type, close, id }) => {
 
   const onSubmitTaskHandler = e => {
     e.preventDefault();
-    const newItem = { id: nanoid(), text: task };
-    dispatch(addTask({ id, newItem }));
+    const newTask =
+      currentCard.items.length > 0
+        ? {
+            id,
+            items: [...currentCard.items, { id: nanoid(), text: task }],
+          }
+        : { id, items: [{ id: nanoid(), text: task }] };
+    dispatch(addNewTask(newTask));
     resetForm();
   };
 

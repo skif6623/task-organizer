@@ -6,9 +6,7 @@ export const dragHappened = createAction(
     droppableIdStart,
     droppableIdEnd,
     droppableIndexStart,
-    droppableIndexEnd,
-    // draggableId,
-    type
+    droppableIndexEnd
   ) => {
     return {
       payload: {
@@ -16,8 +14,6 @@ export const dragHappened = createAction(
         droppableIdEnd,
         droppableIndexStart,
         droppableIndexEnd,
-        // draggableId,
-        type,
       },
     };
   }

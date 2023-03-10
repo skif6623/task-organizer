@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
-import { ECardItem } from './CardItem.styled';
+import { useDispatch } from 'react-redux';
+import { deleteCard } from 'redux/operations';
+
 import { Task } from '../Task/Task';
 import { AddTaskButton } from 'components/AddTaskButton/AddTaskButton';
 import { AddForm } from 'components/AddForm/AddForm';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
 
-export const CardItem = ({ title, cards, id, index }) => {
+import { Droppable } from 'react-beautiful-dnd';
+
+import {
+  ECardItem,
+  ECardContainer,
+  EDeleteButton,
+  ECardTitle,
+} from './CardItem.styled';
+
+export const CardItem = ({ title, cards, id }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const dispatch = useDispatch();
 
   const openFormHandler = () => {
     setIsOpen(true);
@@ -17,32 +29,27 @@ export const CardItem = ({ title, cards, id, index }) => {
   };
 
   return (
-    <Draggable draggableId={`${id}`} index={index}>
+    <Droppable droppableId={`${id}`}>
       {provided => (
-        <div
-          {...provided.draggableProps}
-          ref={provided.innerRef}
-          {...provided.dragHandleProps}
-        >
-          <Droppable droppableId={`${id}`}>
-            {provided => (
-              <div {...provided.droppableProps} ref={provided.innerRef}>
-                <ECardItem>
-                  <h2>{title}</h2>
-                  {cards.map(({ id, text }, index) => (
-                    <Task key={id} id={id} text={text} index={index} />
-                  ))}
-                  {!isOpen && <AddTaskButton open={openFormHandler} />}
-                  {isOpen && (
-                    <AddForm id={id} type="new task" close={closeFormHandler} />
-                  )}
-                  {provided.placeholder}
-                </ECardItem>
-              </div>
+        <ECardContainer>
+          <ECardItem {...provided.droppableProps} ref={provided.innerRef}>
+            <EDeleteButton
+              onClick={() => {
+                dispatch(deleteCard(id));
+              }}
+            />
+            <ECardTitle>{title}</ECardTitle>
+            {cards.map(({ id, text }, index) => (
+              <Task key={id} id={id} text={text} index={index} />
+            ))}
+            {!isOpen && <AddTaskButton open={openFormHandler} />}
+            {isOpen && (
+              <AddForm id={id} type="new task" close={closeFormHandler} />
             )}
-          </Droppable>
-        </div>
+            {provided.placeholder}
+          </ECardItem>
+        </ECardContainer>
       )}
-    </Draggable>
+    </Droppable>
   );
 };

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectList } from 'redux/selectors';
 import { fetchCards } from 'redux/operations';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import { CardItem } from 'components/CardItem/CardItem';
 import { AddCardButton } from 'components/AddCardButton/AddCardButton';
@@ -28,9 +28,7 @@ export const BoardPage = () => {
         result.source.droppableId,
         result.destination.droppableId,
         result.source.index,
-        result.destination.index,
-        // result.draggableId,
-        result.type
+        result.destination.index
       )
     );
   };
@@ -38,23 +36,12 @@ export const BoardPage = () => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <h1>My Board</h1>
-      <Droppable droppableId="all-lists" direction="horizontal" type="list">
-        {provided => (
-          <ECardList {...provided.droppableProps} ref={provided.innerRef}>
-            {lists.map(({ title, id, items }, index) => (
-              <CardItem
-                key={id}
-                title={title}
-                cards={items}
-                id={id}
-                index={index}
-              />
-            ))}
-            <AddCardButton />
-            {provided.placeholder}
-          </ECardList>
-        )}
-      </Droppable>
+      <ECardList>
+        {lists.map(({ title, _id, items }) => (
+          <CardItem key={_id} title={title} cards={items} id={_id} />
+        ))}
+        <AddCardButton />
+      </ECardList>
     </DragDropContext>
   );
 };
