@@ -4,7 +4,7 @@ import {
   addNewCard,
   deleteCard,
   addNewTask,
-  deleteTask,
+  deleteTaskById,
 } from './operations';
 import { dragHappened } from './actions';
 
@@ -31,16 +31,16 @@ const listsSlice = createSlice({
         state.cards.splice(index, 1);
       })
       .addCase(addNewTask.fulfilled, (state, action) => {
-        const oldCard = state.cards.findIndex(
+        const oldCardIndex = state.cards.findIndex(
           item => item._id === action.payload._id
         );
-        state.cards.splice(oldCard, 1, action.payload);
+        state.cards.splice(oldCardIndex, 1, action.payload);
       })
-      .addCase(deleteTask.fulfilled, (state, action) => {
-        const oldCard = state.cards.findIndex(
+      .addCase(deleteTaskById.fulfilled, (state, action) => {
+        const oldCardIndex = state.cards.findIndex(
           item => item._id === action.payload._id
         );
-        state.cards.splice(oldCard, 1, action.payload);
+        state.cards.splice(oldCardIndex, 1, action.payload);
       })
       .addCase(dragHappened, (state, action) => {
         const {

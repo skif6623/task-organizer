@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-axios.defaults.baseURL = 'https://db-cards.onrender.com';
+// axios.defaults.baseURL = 'https://db-cards.onrender.com';
+axios.defaults.baseURL = 'http://localhost:3000';
 
 export const fetchCards = createAsyncThunk(
   'cards/fetchAll',
@@ -27,20 +28,6 @@ export const addNewCard = createAsyncThunk(
   }
 );
 
-export const addNewTask = createAsyncThunk(
-  'cards/addNewTask',
-  async ({ id, items }, thunkAPI) => {
-    try {
-      const response = await axios.patch(`/api/cards/${id}/items`, {
-        items: items,
-      });
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
-
 export const deleteCard = createAsyncThunk(
   'cards/deleteCard',
   async (id, thunkAPI) => {
@@ -53,13 +40,25 @@ export const deleteCard = createAsyncThunk(
   }
 );
 
-export const deleteTask = createAsyncThunk(
-  'cards/deleteTask',
-  async ({ cardId, items }, thunkAPI) => {
+export const addNewTask = createAsyncThunk(
+  'cards/addNewTask',
+  async ({ cardId, text }, thunkAPI) => {
     try {
-      const response = await axios.patch(`/api/cards/${cardId}/items`, {
-        items: items,
-      });
+      const response = await axios.post(`/api/cards/${cardId}/items`, { text });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteTaskById = createAsyncThunk(
+  'cards/deleteTaskById',
+  async ({ cardId, taskId }, thunkAPI) => {
+    try {
+      const response = await axios.delete(
+        `/api/cards/${cardId}/items/${taskId}`
+      );
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

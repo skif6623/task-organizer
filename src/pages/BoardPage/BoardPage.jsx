@@ -2,15 +2,17 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectList } from 'redux/selectors';
 import { fetchCards } from 'redux/operations';
-import { DragDropContext } from 'react-beautiful-dnd';
 
-import { CardItem } from 'components/CardItem/CardItem';
-import { AddCardButton } from 'components/AddCardButton/AddCardButton';
-import { ECardList } from './BoardPage.styled';
+import { DragDropContext } from 'react-beautiful-dnd';
 import { dragHappened } from 'redux/actions';
 
+import { Card } from 'components/Card/Card';
+import { AddCardButton } from 'components/AddCardButton/AddCardButton';
+
+import { CardList, BoardTitle } from './BoardPage.styled';
+
 export const BoardPage = () => {
-  const lists = useSelector(selectList);
+  const cards = useSelector(selectList);
 
   const dispatch = useDispatch();
 
@@ -35,13 +37,13 @@ export const BoardPage = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <h1>My Board</h1>
-      <ECardList>
-        {lists.map(({ title, _id, items }) => (
-          <CardItem key={_id} title={title} cards={items} _id={_id} />
+      <BoardTitle>My Board</BoardTitle>
+      <CardList>
+        {cards.map(({ title, _id, items }) => (
+          <Card key={_id} title={title} tasks={items} cardId={_id} />
         ))}
         <AddCardButton />
-      </ECardList>
+      </CardList>
     </DragDropContext>
   );
 };

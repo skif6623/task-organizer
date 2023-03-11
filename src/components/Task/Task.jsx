@@ -1,23 +1,20 @@
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectList } from 'redux/selectors';
-import { deleteTask } from 'redux/operations';
-import { CardContent, Typography, Card } from '@mui/material';
-import { Draggable } from 'react-beautiful-dnd';
-import { ECardContainer, ECardDelete } from './Task.styled';
+import { useDispatch } from 'react-redux';
+import { deleteTaskById } from 'redux/operations';
 
-export function Task({ text, id, index, cardId }) {
+import { CardContent, Typography, Card } from '@mui/material';
+
+import { Draggable } from 'react-beautiful-dnd';
+
+import { TaskContainer, DeleteTaskButton, UpdateTitle } from './Task.styled';
+
+export function Task({ text, taskId, index, cardId, updated }) {
   const dispatch = useDispatch();
-  const lists = useSelector(selectList);
-  const copyLists = lists.slice();
-  const cardIdx = copyLists.findIndex(item => item._id === cardId);
-  const currentCard = copyLists[cardIdx];
-  const currentTasks = currentCard.items.filter(item => item.id !== id);
 
   return (
-    <Draggable draggableId={`${id}`} index={index}>
+    <Draggable draggableId={`${taskId}`} index={index}>
       {provided => (
-        <ECardContainer
+        <TaskContainer
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -25,14 +22,15 @@ export function Task({ text, id, index, cardId }) {
           <Card sx={{ position: 'relative' }}>
             <CardContent>
               <Typography>{text}</Typography>
-              <ECardDelete
+              <UpdateTitle>час</UpdateTitle>
+              <DeleteTaskButton
                 onClick={() => {
-                  dispatch(deleteTask({ cardId, items: [...currentTasks] }));
+                  dispatch(deleteTaskById({ cardId, taskId }));
                 }}
               />
             </CardContent>
           </Card>
-        </ECardContainer>
+        </TaskContainer>
       )}
     </Draggable>
   );

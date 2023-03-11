@@ -1,70 +1,50 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectList } from 'redux/selectors';
+import { useDispatch } from 'react-redux';
 import { addNewCard, addNewTask } from 'redux/operations';
 
 import { Card, Box, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { ETextArea, EAddBtn } from './AddForm.styled';
-import { nanoid } from 'nanoid';
+import { TextArea, AddButton, Form } from './AddForm.styled';
 
-export const AddForm = ({ type, close, id }) => {
-  const [value, setValue] = useState('');
-  const [task, setTask] = useState('');
+export const AddForm = ({ type, close, cardId }) => {
   const dispatch = useDispatch();
-  const cards = useSelector(selectList);
-  const currentCard = cards.find(item => item._id === id);
-
-  const resetForm = type => {
-    type === 'card' ? setValue('') : setTask('');
-    close();
-  };
 
   const onSubmitCardHandler = e => {
     e.preventDefault();
-    const newCard = { title: value, items: [] };
+    const title = e.currentTarget.elements.name.value;
+    const newCard = { title, items: [] };
     dispatch(addNewCard(newCard));
-    resetForm();
+    close();
   };
 
   const onSubmitTaskHandler = e => {
     e.preventDefault();
-    const newTask =
-      currentCard.items.length > 0
-        ? {
-            id,
-            items: [...currentCard.items, { id: nanoid(), text: task }],
-          }
-        : { id, items: [{ id: nanoid(), text: task }] };
-    dispatch(addNewTask(newTask));
-    resetForm();
+    const text = e.currentTarget.elements.name.value;
+    dispatch(addNewTask({ cardId, text }));
+    close();
   };
 
   return (
-    <form
+    <Form
+      type={type}
       onSubmit={type === 'new task' ? onSubmitTaskHandler : onSubmitCardHandler}
     >
       <Card>
-        <ETextArea
+        <TextArea
           autoFocus
           placeholder={`enter a ${type} name`}
           aria-label={`enter new ${type}`}
           minRows={3}
-          value={type === 'card' ? value : task}
-          onChange={e => {
-            type === 'card'
-              ? setValue(e.target.value)
-              : setTask(e.target.value);
-          }}
+          name="name"
+          type="text"
         />
       </Card>
       <Box sx={{ marginTop: '10px' }}>
-        <EAddBtn type="submit">{`Add ${type}`}</EAddBtn>
+        <AddButton type="submit">{`Add ${type}`}</AddButton>
         <IconButton aria-label="close" onClick={() => close()}>
           <CloseIcon />
         </IconButton>
       </Box>
-    </form>
+    </Form>
   );
 };
