@@ -29,7 +29,7 @@ export function ResponsiveAppBar() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
+            component="div"
             href="/"
             sx={{
               mr: 2,
