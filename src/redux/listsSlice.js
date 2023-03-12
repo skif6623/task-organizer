@@ -5,8 +5,9 @@ import {
   deleteCard,
   addNewTask,
   deleteTaskById,
+  dragUpdate,
+  dragUpdateMany,
 } from './operations';
-import { dragHappened } from './actions';
 
 const initialState = {
   cards: [],
@@ -42,42 +43,28 @@ const listsSlice = createSlice({
         );
         state.cards.splice(oldCardIndex, 1, action.payload);
       })
-      .addCase(dragHappened, (state, action) => {
-        const {
-          droppableIdStart,
-          droppableIdEnd,
-          droppableIndexStart,
-          droppableIndexEnd,
-        } = action.payload;
+      .addCase(dragUpdate.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const oldCardIndex = state.cards.findIndex(
+          item => item._id === action.payload._id
+        );
+        state.cards.splice(oldCardIndex, 1, action.payload);
+      })
+      .addCase(dragUpdateMany.fulfilled, (state, action) => {
+        const endCard = action.payload[0];
+        const startCard = action.payload[1];
 
-        if (droppableIdStart === droppableIdEnd) {
-          const cards = [...state.cards];
-          const cardIndex = cards.findIndex(
-            card => card._id === droppableIdStart
-          );
+        const cards = [...state.cards];
+        const startCardIndex = cards.findIndex(
+          item => item._id === startCard._id
+        );
+        const endCardIndex = cards.findIndex(item => item._id === endCard._id);
+        cards.splice(startCardIndex, 1);
+        cards.splice(startCardIndex, 0, { ...startCard });
+        cards.splice(endCardIndex, 1);
+        cards.splice(endCardIndex, 0, { ...endCard });
 
-          const card = cards[cardIndex];
-          const task = card.items.splice(droppableIndexStart, 1);
-          card.items.splice(droppableIndexEnd, 0, ...task);
-          state.cards = cards;
-        }
-
-        if (droppableIdStart !== droppableIdEnd) {
-          const cards = [...state.cards];
-
-          const cardStartIdx = cards.findIndex(
-            card => card._id === droppableIdStart
-          );
-          const cardStart = cards[cardStartIdx];
-          const task = cardStart.items.splice(droppableIndexStart, 1);
-
-          const cardEndIdx = cards.findIndex(
-            card => card._id === droppableIdEnd
-          );
-          const cardEnd = cards[cardEndIdx];
-          cardEnd.items.splice(droppableIndexEnd, 0, ...task);
-          state.cards = cards;
-        }
+        state.cards = cards;
       });
   },
 });

@@ -2,7 +2,6 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 axios.defaults.baseURL = 'https://db-cards.onrender.com';
-// axios.defaults.baseURL = 'http://localhost:3000';
 
 export const fetchCards = createAsyncThunk(
   'cards/fetchAll',
@@ -58,6 +57,33 @@ export const deleteTaskById = createAsyncThunk(
     try {
       const response = await axios.delete(
         `/api/cards/${cardId}/items/${taskId}`
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const dragUpdate = createAsyncThunk(
+  'cards/dragUpdate',
+  async ({ cardId, updatedCard }, thunkAPI) => {
+    try {
+      const response = await axios.put(`/api/cards/${cardId}`, updatedCard);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const dragUpdateMany = createAsyncThunk(
+  'cards/dragUpdateMany',
+  async ({ cardStartId, cardEndId, taskStart, taskEnd }, thunkAPI) => {
+    try {
+      const response = await axios.put(
+        `/api/cards/${cardStartId}/${cardEndId}`,
+        { taskStart, taskEnd }
       );
       return response.data;
     } catch (error) {

@@ -5,11 +5,14 @@ import { deleteTaskById } from 'redux/operations';
 import { CardContent, Typography, Card } from '@mui/material';
 
 import { Draggable } from 'react-beautiful-dnd';
+import { formatDate } from '../../utils/formatDate';
 
 import { TaskContainer, DeleteTaskButton, UpdateTitle } from './Task.styled';
 
 export function Task({ text, taskId, index, cardId, updated }) {
   const dispatch = useDispatch();
+
+  const date = formatDate(updated);
 
   return (
     <Draggable draggableId={`${taskId}`} index={index}>
@@ -22,7 +25,7 @@ export function Task({ text, taskId, index, cardId, updated }) {
           <Card sx={{ position: 'relative' }}>
             <CardContent>
               <Typography>{text}</Typography>
-              <UpdateTitle>час</UpdateTitle>
+              <UpdateTitle>{date}</UpdateTitle>
               <DeleteTaskButton
                 onClick={() => {
                   dispatch(deleteTaskById({ cardId, taskId }));

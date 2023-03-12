@@ -10,6 +10,8 @@ export const UpdateTitle = styled.p`
   position: absolute;
   bottom: 2px;
   right: 2px;
+
+  font-size: 10px;
 `;
 
 export const DeleteTaskButton = styled(CloseIcon)`
