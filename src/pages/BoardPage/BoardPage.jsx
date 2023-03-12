@@ -9,7 +9,7 @@ import { dragUpdate, dragUpdateMany } from 'redux/operations';
 import { Card } from 'components/Card/Card';
 import { AddCardButton } from 'components/AddCardButton/AddCardButton';
 
-import { CardList, BoardTitle } from './BoardPage.styled';
+import { CardList, BoardTitle, BoardWrapper } from './BoardPage.styled';
 
 export const BoardPage = () => {
   const cards = useSelector(selectList);
@@ -61,13 +61,15 @@ export const BoardPage = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <BoardTitle>My Board</BoardTitle>
-      <CardList>
-        {cards.map(({ title, _id, items }) => (
-          <Card key={_id} title={title} tasks={items} cardId={_id} />
-        ))}
-        <AddCardButton />
-      </CardList>
+      <BoardWrapper>
+        <BoardTitle>My Board</BoardTitle>
+        <CardList>
+          {cards.map(({ title, _id, items }) => (
+            <Card key={_id} title={title} tasks={items} cardId={_id} />
+          ))}
+          <AddCardButton />
+        </CardList>
+      </BoardWrapper>
     </DragDropContext>
   );
 };

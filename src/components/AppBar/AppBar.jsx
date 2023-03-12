@@ -8,9 +8,8 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
-
-const pages = ['Home', 'Board', 'Login'];
+import { NavLink } from 'react-router-dom';
+import { NavButton } from './AppBar.styled';
 
 export function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -73,11 +72,28 @@ export function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map(page => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <NavLink
+                    to="/"
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                    Home
+                  </NavLink>
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <NavLink
+                    to="/board"
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                    Board
+                  </NavLink>
+                </Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <Typography
@@ -97,21 +113,30 @@ export function ResponsiveAppBar() {
           >
             TaskOrg
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            <Link
+          <Box
+            sx={{
+              display: { xs: 'none', md: 'flex', gap: '30px' },
+              marginLeft: 'auto',
+            }}
+          >
+            <NavButton
               to="/"
               onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: 'white', display: 'block' }}
+              sx={{
+                my: 2,
+                color: 'white',
+                display: 'block',
+              }}
             >
               Home
-            </Link>
-            <Link
+            </NavButton>
+            <NavButton
               to="/board"
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: 'white', display: 'block' }}
             >
               Board
-            </Link>
+            </NavButton>
           </Box>
         </Toolbar>
       </Container>

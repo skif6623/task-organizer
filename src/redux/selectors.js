@@ -1,1 +1,1 @@
-export const selectList = state => state.lists.cards;
+export const selectList = state => state.cards.cards;
